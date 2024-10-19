@@ -1,39 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './speech.module.css';
 
 export default function Speech() {
     const [start, setStart] = useState(false);
-    const [ask, setAsk] = useState(false);
+    let final = ''
     const { webkitSpeechRecognition }: any = window;
     const recognition = new webkitSpeechRecognition();
 
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
-    let final_transcript = '';
 
     recognition.onstart = function () {
         console.log('Listening...');
         setStart(true)
     };
 
-    recognition.onresult = function (event: any) {
-        
-        console.log(ask)
+    function Edit2() {
+        console.log('Edit2');
+        console.log(final)
+    }
 
-        if (ask) return;
+    recognition.onresult = function (event: any) {
+
 
         let interim_transcript = '';
 
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
-                final_transcript += event.results[i][0].transcript;
+                final += event.results[i][0].transcript;
+                // setFinal(temp + event.results[i][0].transcript);
             } else {
                 interim_transcript += event.results[i][0].transcript;
             }
         }
 
-        if (document.getElementById('transcript')) document.getElementById('transcript')!.innerHTML = final_transcript + interim_transcript + `<span class="${ask && styles.check}"></span><span class="${ask && styles.cross}"></span>`;
+        if (document.getElementById('transcript')) document.getElementById('transcript')!.innerHTML = final + interim_transcript;
     };
 
     return (<>
@@ -74,12 +76,10 @@ export default function Speech() {
                             left: 'calc(50% - 10px)',
                         }}
                         onClick={(e) => {
-                            console.log('clicked', start);
-                            recognition[!start ? 'start' : 'stop']();
                             if (start) {
-                                setAsk(true);
-                                recognition.stop();
+                                Edit2()
                             }
+                            recognition[!start ? 'start' : 'stop']();
                         }}>
                         <img src="./mic.png" alt="mic" style={{
                             filter: start ? 'invert(1)' : 'invert(0)',
