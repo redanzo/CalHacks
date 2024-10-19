@@ -1,0 +1,15 @@
+:root {
+  --background: linear-gradient(to bottom right, #007fff, #643da7, #ea00ff);
+  --foreground: #ededed;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: system-ui;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
