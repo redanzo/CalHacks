@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
+import Jobs from './Jobs';
 import styles from './speech.module.css';
 
 export default function Speech() {
     const [start, setStart] = useState(false);
+    const [job, setJob] = useState(false);
     let final = ''
     const { webkitSpeechRecognition }: any = window;
     const recognition = new webkitSpeechRecognition();
+    let keywords = ['hello', 'bye', 'goodbye', 'good', 'bad', 'yes', 'no', 'maybe', 'ok', 'fine', 'great', 'awesome', 'cool', 'nice', 'bad', 'terrible', 'horrible', 'sad', 'happy', 'angry', 'mad', 'upset', 'excited', 'bored', 'tired', 'sleepy', 'hungry', 'thirsty', 'hot', 'cold', 'sick', 'ill', 'healthy', 'well', 'better', 'worse', 'best', 'worst', 'beautiful', 'ugly', 'pretty', 'handsome', 'cute', 'smart', 'intelligent', 'dumb', 'stupid', 'clever', 'wise', 'silly', 'funny', 'serious', 'calm', 'relaxed', 'nervous', 'anxious', 'scared', 'afraid', 'frightened', 'shy', 'brave', 'courageous', 'proud', 'ashamed', 'guilty', 'embarrassed', 'confident', 'humble', 'modest', 'jealous', 'envious', 'greedy', 'generous', 'selfish', 'selfless', 'kind', 'mean', 'rude', 'polite', 'respectful', 'disrespectful', 'honest', 'dishonest', 'loyal', 'unloyal', 'faithful', 'unfaithful', 'trustworthy', 'untrustworthy', 'reliable', 'unreliable', 'responsible', 'irresponsible', 'mature', 'immature', 'patient', 'impatient', 'tolerant', 'intolerant', 'forgiving', 'unforgiving', 'understanding', 'misunderstanding', 'sympathetic', 'unsympathetic', 'empathetic', 'unempathetic', 'compassionate', 'uncompassionate', 'caring', 'uncaring', 'loving', 'unloving', 'affectionate', 'unaffectionate', 'passionate', 'unpassionate', 'romantic', 'unromantic', 'sensual', 'unsensual', 'sexual', 'asexual', 'aromantic', 'unaromantic', 'platonic', 'unplatonic', 'friendly', 'unfriendly', 'social', 'antisocial', 'introverted', 'extroverted', 'ambiverted', 'shy', 'outgoing', 'talkative', 'quiet', 'silent', 'loud', 'noisy', 'chatty', 'gossipy', 'nosy', 'curious', 'inquisitive', 'interested', 'bored', 'boring', 'exciting', 'excited', 'fun', 'funny', 'hilarious', 'entertaining', 'entertained', 'bored', 'boring', 'interested', 'interesting']
 
     recognition.continuous = true;
     recognition.interimResults = true;
@@ -16,9 +19,19 @@ export default function Speech() {
         setStart(true)
     };
 
-    function Edit2() {
-        console.log('Edit2');
-        console.log(final)
+    function runE2() {
+        const list: string[] = []
+        document.getElementById('transcript')?.innerHTML.match(/\<b\>.*\<\/b\>/g)?.forEach((word: string) => {
+            list.includes(word.slice(3, -4)) ? null : list.push(word.slice(3, -4))
+        })
+        fetch('http://localhost:5000/e2', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ list })
+        })
+        setJob(true)
     }
 
     recognition.onresult = function (event: any) {
@@ -29,17 +42,28 @@ export default function Speech() {
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
                 final += event.results[i][0].transcript;
-                // setFinal(temp + event.results[i][0].transcript);
+                final = final.split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
             } else {
                 interim_transcript += event.results[i][0].transcript;
+                interim_transcript = interim_transcript.split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
             }
         }
 
-        if (document.getElementById('transcript')) document.getElementById('transcript')!.innerHTML = final + interim_transcript;
+        if (document.getElementById('transcript')) document.getElementById('transcript')!.innerHTML = `${final} ${interim_transcript}`
     };
 
-    return (<>
+    recognition.onend = function () {
+        console.log('Stopped listening');
+    };
 
+    window.onkeyup = (e) => {
+        if (e.key === 'Escape' && job) {
+            setJob(false)
+        }
+    }
+
+    return (<>
+        {job && <Jobs />}
         <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed' }}>
             <main style={{
                 background: 'rgba(255, 255, 255, 0.3)',
@@ -77,7 +101,7 @@ export default function Speech() {
                         }}
                         onClick={(e) => {
                             if (start) {
-                                Edit2()
+                                runE2()
                             }
                             recognition[!start ? 'start' : 'stop']();
                         }}>

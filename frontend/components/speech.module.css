@@ -22,6 +22,8 @@
     font-family: "Beiruti", system-ui !important;
     text-shadow: 1px 1px black;
     text-transform: uppercase;
+    max-height: calc(70vh - 60px);
+    overflow: hidden;
 }
 
 .speech b {
