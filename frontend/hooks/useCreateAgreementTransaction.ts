@@ -15,7 +15,7 @@ export const useCreateAgreementTransaction = () => {
 
     // how do i get rercuiter address and amount from the frontend?
 
-    const [coin] = txb.splitCoins(txb.gas, [100]);
+    const [coin] = txb.splitCoins(txb.gas, [10000]);
 
     txb.moveCall({
       target: `${clientConfig.PACKAGE_ID}::agreement::create`,

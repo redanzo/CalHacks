@@ -87,10 +87,10 @@ export default function Speech() {
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
                 final += event.results[i][0].transcript;
-                final = final.split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
+                final = final.replace(/\.(?=[A-z]{1})/g, '. ').split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
             } else {
                 interim_transcript += event.results[i][0].transcript;
-                interim_transcript = interim_transcript.split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
+                interim_transcript = interim_transcript.replace(/\.(?=[A-z]{1})/g, '. ').split(' ').map((word: string) => keywords.includes((word.toLowerCase().match(/[A-z]*/g) as any)?.[0]) ? `<b>${word}</b>` : word).join(' ');
             }
         }
 

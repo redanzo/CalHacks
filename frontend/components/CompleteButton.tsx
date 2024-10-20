@@ -36,14 +36,14 @@ export function CompleteButton({
 
   return (
     <Card style={{
-      width: '100%',
+      width: 'max-content',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       background: 'transparent',
       outline: 'none',
       border: 'none',
-
+      marginRight: '20px'
     }}>
       <Button
       style={{ zIndex: 1000, position: "relative", width: '100px',

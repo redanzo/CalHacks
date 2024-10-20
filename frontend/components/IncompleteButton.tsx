@@ -36,7 +36,7 @@ export function IncompleteButton({
 
   return (
     <Card style={{
-      width: '100%',
+      width: 'max-content',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',

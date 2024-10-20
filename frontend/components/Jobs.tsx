@@ -1,5 +1,5 @@
 import styles from './jobs.module.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
@@ -45,13 +45,29 @@ export default function Jobs({
         setShow(true);
     }
 
-    const audio = new Audio('http://localhost:8000/output.wav');
+    useEffect(() => {
 
-    audio.addEventListener('loadeddata', function () {
-        audio.play();
-    });
+        const audio = new Audio('http://localhost:8000/output.wav');
 
+        if (!isAudioPlaying()) {
+            audio.addEventListener('loadeddata', function () {
+                audio.play();
+            });
+        }
 
+        function isAudioPlaying() {
+            const audios = document.querySelectorAll('audio');
+
+            for (let i = 0; i < audios.length; i++) {
+                if (!audios[i].paused) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+    }, [])
     return (
         <>
             {show && <Counter id={objectId} setObjectID={setObjectID} />}
@@ -77,14 +93,14 @@ export default function Jobs({
                                 <div className={styles.header} style={{ pointerEvents: 'none' }}>
                                     <h1>{freelancer.first_name} {freelancer.last_name}</h1>
                                     <div className={styles.require}>
-                                        {freelancer.skills.split(', ').map((skill: any) => {
-                                            return <span>{skill}</span>
+                                        {freelancer.skills.split(', ').map((skill: any, i: number) => {
+                                            return <span key={i}>{skill}</span>
                                         }).slice(0, 5)}
                                     </div>
                                     <span></span>
                                     <p>{Math.floor(Math.random() * 11) + 90}% Compatible</p>
                                 </div>
-                                <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
+                                {/* <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p> */}
                             </div>
                         );
                     })}

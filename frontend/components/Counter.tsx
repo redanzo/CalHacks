@@ -71,25 +71,30 @@ export function Counter({ id, setObjectID, }: { id: string, setObjectID: any }) 
       outline: "3px solid rgba(255, 255, 255, 1)",
     }} className={styles.card}>
       <CardHeader>
-        <CardTitle className="text-xl woopie" style={{ fontSize: '30px' }}>Object ID {id}</CardTitle>
+        <CardTitle className="text-xl woopie" style={{ fontSize: '37px', textAlign: "center" }}>AGREEMENT</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-2 t">
-        <span>Balance: {balance}</span>
-        <span>Freelancer: {freelancer}</span>
-        <span>Rercuiter: {rercuiter}</span>
-        <span>status: {status}</span>
+        <span style={{ textTransform: "capitalize" }}>Amount: {balance}</span>
+        <span style={{ textTransform: "capitalize" }}>Freelancer: {freelancer}</span>
+        <span style={{ textTransform: "capitalize" }}>Rercuiter: {rercuiter}</span>
+        <span style={{ textTransform: "capitalize" }}>Status: {status}</span>
 
 
-        <CompleteButton onCreated={(id) => {
-          window.location.hash = id;
-          setCounter(id);
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+        }}>
+          <CompleteButton onCreated={(id) => {
+            window.location.hash = id;
+            setCounter(id);
 
-        }} objectID={id} />
-        <IncompleteButton onCreated={(id) => {
-          window.location.hash = id;
-          setCounter(id);
-        }} objectID={id} />
+          }} objectID={id} />
+          <IncompleteButton onCreated={(id) => {
+            window.location.hash = id;
+            setCounter(id);
+          }} objectID={id} />
+        </div>
 
       </CardContent>
     </Card>

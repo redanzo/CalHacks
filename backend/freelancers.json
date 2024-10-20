@@ -1,13 +1,13 @@
 [
     {
-        "first_name": "James",
-        "last_name": "Wilson",
-        "skills": "Python, Java, SQL, Cloud Computing, AWS, Docker, Kubernetes, DevOps, Machine Learning, Artificial Intelligence"
-    },
-    {
         "first_name": "Michael",
         "last_name": "Brown",
         "skills": "Python, Java, SQL, Mobile App Development, Android, iOS, Docker, Kubernetes, Cloud Computing, Machine Learning"
+    },
+    {
+        "first_name": "Sophia",
+        "last_name": "Jones",
+        "skills": "JavaScript, HTML, CSS, React, Python, SQL, Cloud Computing, AWS, Docker, Flask, Django, Node.js, UX/UI Design"
     },
     {
         "first_name": "John",
@@ -15,13 +15,13 @@
         "skills": "Python, Java, SQL, Machine Learning, Data Science, Cloud Computing, Docker, Kubernetes, AWS, Flask, Django"
     },
     {
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "skills": "JavaScript, React, Node.js, SQL, Python, HTML, CSS, Cloud Computing, AWS, Docker, Kubernetes, Flask, Django"
+    },
+    {
         "first_name": "Bob",
         "last_name": "Johnson",
         "skills": "Java, SQL, Python, Machine Learning, Artificial Intelligence, Blockchain, Solidity, Docker, Kubernetes, AWS, Flask"
-    },
-    {
-        "first_name": "David",
-        "last_name": "Miller",
-        "skills": "Blockchain, Solidity, Python, Java, SQL, AWS, Docker, Kubernetes, Cloud Computing, Machine Learning, Flask"
     }
 ]
