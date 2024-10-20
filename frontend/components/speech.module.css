@@ -82,6 +82,21 @@
     opacity: 0.8;
 }
 
+.start:before {
+    content: attr(data-text);
+    display: inline-block;
+    width: 50vw;
+    height: 10px;
+    position: absolute;
+    margin-top: -240px;
+    white-space: nowrap;
+    font-size: 34px;
+    text-align: center;
+    color: #fefefe;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
 .check {
     width: 20px;
     height: 20px;

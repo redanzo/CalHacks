@@ -9,6 +9,7 @@ import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import { useCreateAgreementTransaction } from "@/hooks/useCreateAgreementTransaction";
 import { useCustomWallet } from "@/contexts/CustomWallet";
+// import { exec } from 'child_process';
 
 export default function Speech() {
 
@@ -16,8 +17,12 @@ export default function Speech() {
 
     const [waitingForTxn, setWaitingForTxn] = useState(false);
     const { isConnected } = useCustomWallet();
+    const [percent, setPercent] = useState(0);
+    const [freelancers, setFreelancers] = useState<string[]>([]);
 
     const { handleExecute } = useCreateAgreementTransaction();
+
+    let once1 = false
 
     async function create() {
         setWaitingForTxn(true);
@@ -35,6 +40,7 @@ export default function Speech() {
         }
 
         setWaitingForTxn(false);
+        setPercent(100);
     }
 
 
@@ -45,7 +51,7 @@ export default function Speech() {
     let final = ''
     const { webkitSpeechRecognition }: any = window;
     const recognition = new webkitSpeechRecognition();
-    let keywords = ['hello', 'bye', 'goodbye', 'good', 'bad', 'yes', 'no', 'maybe', 'ok', 'fine', 'great', 'awesome', 'cool', 'nice', 'bad', 'terrible', 'horrible', 'sad', 'happy', 'angry', 'mad', 'upset', 'excited', 'bored', 'tired', 'sleepy', 'hungry', 'thirsty', 'hot', 'cold', 'sick', 'ill', 'healthy', 'well', 'better', 'worse', 'best', 'worst', 'beautiful', 'ugly', 'pretty', 'handsome', 'cute', 'smart', 'intelligent', 'dumb', 'stupid', 'clever', 'wise', 'silly', 'funny', 'serious', 'calm', 'relaxed', 'nervous', 'anxious', 'scared', 'afraid', 'frightened', 'shy', 'brave', 'courageous', 'proud', 'ashamed', 'guilty', 'embarrassed', 'confident', 'humble', 'modest', 'jealous', 'envious', 'greedy', 'generous', 'selfish', 'selfless', 'kind', 'mean', 'rude', 'polite', 'respectful', 'disrespectful', 'honest', 'dishonest', 'loyal', 'unloyal', 'faithful', 'unfaithful', 'trustworthy', 'untrustworthy', 'reliable', 'unreliable', 'responsible', 'irresponsible', 'mature', 'immature', 'patient', 'impatient', 'tolerant', 'intolerant', 'forgiving', 'unforgiving', 'understanding', 'misunderstanding', 'sympathetic', 'unsympathetic', 'empathetic', 'unempathetic', 'compassionate', 'uncompassionate', 'caring', 'uncaring', 'loving', 'unloving', 'affectionate', 'unaffectionate', 'passionate', 'unpassionate', 'romantic', 'unromantic', 'sensual', 'unsensual', 'sexual', 'asexual', 'aromantic', 'unaromantic', 'platonic', 'unplatonic', 'friendly', 'unfriendly', 'social', 'antisocial', 'introverted', 'extroverted', 'ambiverted', 'shy', 'outgoing', 'talkative', 'quiet', 'silent', 'loud', 'noisy', 'chatty', 'gossipy', 'nosy', 'curious', 'inquisitive', 'interested', 'bored', 'boring', 'exciting', 'excited', 'fun', 'funny', 'hilarious', 'entertaining', 'entertained', 'bored', 'boring', 'interested', 'interesting']
+    let keywords = ['Python', 'Java', 'SQL', 'Machine Learning', 'Data Science', 'Cloud Computing', 'Docker', 'Kubernetes', 'AWS', 'Flask', 'Django', 'JavaScript', 'React', 'Node.js', 'HTML', 'CSS', 'Artificial Intelligence', 'Blockchain', 'Solidity', 'Neural Networks', 'Mobile App Development', 'Android', 'iOS', 'UX/UI Design', 'R', 'DevOps'].map((word) => word.toLowerCase())
 
     let once = false
     recognition.continuous = true;
@@ -57,19 +63,20 @@ export default function Speech() {
         setStart(true)
     };
 
-    function runE2() {
+    async function runE2() {
+        setJob(true);
         const list: string[] = []
-        document.getElementById('transcript')?.innerHTML.match(/\<b\>.*\<\/b\>/g)?.forEach((word: string) => {
-            list.includes(word.slice(3, -4)) ? null : list.push(word.slice(3, -4))
+        document.getElementById('transcript')?.innerHTML.match(/\<b\>.*?\<\/b\>/g)?.forEach((word: string) => {
+            list.includes(word.trim().slice(3, -4)) ? null : list.push(word.trim().slice(3, -4).replace(/\.|,|!|\?/g, ''))
         })
-        // fetch('http://localhost:5000/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ list })
-        // })
-        setJob(true)
+
+        let result = await fetch(`http://localhost:8000/exec/${list.join(',')}`)
+        let data = await result.json()
+        setFreelancers(data)
+        setPercent(33);
+
+        await fetch(`http://localhost:8000/audio`)
+        setPercent(66);
     }
 
     recognition.onresult = function (event: any) {
@@ -102,9 +109,9 @@ export default function Speech() {
 
     return (<>
         {job && <>
-            {!once && <Process objectId={objectId as string} />}
+            {!once && <Process objectId={objectId as string} p={[percent, setPercent]} f={freelancers as any} />}
             {once = true}
-            </>}
+        </>}
         <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed' }}>
             <main style={{
                 background: 'rgba(255, 255, 255, 0.3)',
@@ -122,7 +129,8 @@ export default function Speech() {
                 justifyContent: 'center',
             }}>
                 <div className={styles.speech}>
-                    <div className={styles.start}
+                    <div className={styles.start + ' woopie'}
+                        data-text={start ? 'Press me to stop recording' : 'Press me to start recording'}
                         style={{
                             width: 'max-content',
                             height: 'max-content',

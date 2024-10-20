@@ -10,8 +10,10 @@ import { Counter } from "./Counter";
 
 export default function Jobs({
     objectId,
+    f
 }: {
     objectId: string;
+    f: [string[], (freelancers: string[]) => void];
 }) {
 
     const [show, setShow] = useState(false);
@@ -43,6 +45,13 @@ export default function Jobs({
         setShow(true);
     }
 
+    const audio = new Audio('http://localhost:8000/output.wav');
+
+    audio.addEventListener('loadeddata', function () {
+        audio.play();
+    });
+
+
     return (
         <>
             {show && <Counter id={objectId} setObjectID={setObjectID} />}
@@ -60,84 +69,25 @@ export default function Jobs({
                     justifyContent: 'center',
                 }}>
 
-                    <div className={styles.job} onClick={(e) => claim()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
+                    {/* Loop though f and convert each to an element */}
+
+                    {f.map((freelancer: any) => {
+                        return (
+                            <div className={styles.job} onClick={(e) => claim()}>
+                                <div className={styles.header} style={{ pointerEvents: 'none' }}>
+                                    <h1>{freelancer.first_name} {freelancer.last_name}</h1>
+                                    <div className={styles.require}>
+                                        {freelancer.skills.split(', ').map((skill: any) => {
+                                            return <span>{skill}</span>
+                                        }).slice(0, 5)}
+                                    </div>
+                                    <span></span>
+                                    <p>{Math.floor(Math.random() * 11) + 90}% Compatible</p>
+                                </div>
+                                <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
                             </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
-                    </div>
-
-
-                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
-                    </div>
-
-
-                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
-                    </div>
-
-
-                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
-                    </div>
-
-
-                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
-                    </div>
+                        );
+                    })}
                 </main>
             </div>
         </>

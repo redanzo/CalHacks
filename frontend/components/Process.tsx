@@ -1,26 +1,28 @@
 import styles from './jobs.module.css'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Jobs from './Jobs'
 import { Counter } from './Counter'
 
 export default function Process({
     objectId,
+    p, f
 }: {
     objectId: string;
+    p: [number, (percent: number) => void];
+    f: [string[], (freelancers: string[]) => void];
 }) {
 
     let [objectID, setObjectID] = useState<string>(objectId);
 
+    useEffect(() => {
+        if (p[0] === 100) {
+            setShow(true)
+        }
+        document.documentElement.style.setProperty('--load', `${p[0] < 10 ? `0${p[0]}` : p[0]}%`)
+        if (document.querySelector('#woot div')) document.querySelector('#woot div')!.setAttribute('data-percent', `${p[0] < 10 ? `0${p[0]}` : p[0]}%`)
+    }, [p[0]])
+
     let [show, setShow] = useState(false)
-    for (let i = 0; i <= 100; i++) {
-        setTimeout(() => {
-            document.documentElement.style.setProperty('--load', `${i < 10 ? `0${i}` : i}%`)
-            if (document.querySelector('#woot div')) document.querySelector('#woot div')!.setAttribute('data-percent', `${i < 10 ? `0${i}` : i}%`)
-            if (i === 100) {
-                setShow(true)
-            }
-        }, i * 10)
-    }
 
     return (
         <>
@@ -46,7 +48,7 @@ export default function Process({
                     </main>
                 </div>
             </> : <>
-                <Jobs objectId={objectId} />
+                <Jobs objectId={objectId} f={f} />
             </>}
         </>
     )
