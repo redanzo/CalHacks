@@ -24,13 +24,13 @@ export default function Speech() {
         document.getElementById('transcript')?.innerHTML.match(/\<b\>.*\<\/b\>/g)?.forEach((word: string) => {
             list.includes(word.slice(3, -4)) ? null : list.push(word.slice(3, -4))
         })
-        // fetch('http://localhost:5000/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ list })
-        // })
+        fetch('http://localhost:5000/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ list })
+        })
         setJob(true)
     }
 
