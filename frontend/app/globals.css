@@ -72,7 +72,7 @@
   --background: linear-gradient(to bottom right, #007fff, #e74c3c 80%);
   --foreground: #ededed;
 
-  --load: 50%;
+  --load: 0%;
   --load-color: #007fff;
 }
 

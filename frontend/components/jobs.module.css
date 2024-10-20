@@ -21,9 +21,12 @@
     content: attr(data-percent);
     width: 100px;
     margin: 10px;
-    padding: 45px 35px 35px 35px;
+    position: absolute;
+    padding: 40px 35px 35px 30px;
     border-radius: 50%;
-    background: #2c3e50;
+    background: rgba(255, 255, 255, 0.4);
+    color: black;
+    font-family: 'SUSE';
     text-align: center;
 }
 
@@ -31,12 +34,9 @@
     --load-value: var(--load);
     transition: --load-value 400ms;
     background: conic-gradient(#007fff var(--load-value), #c0c0c0 var(--load-value));
-    height: 100px;
-}
-
-.load > div:before {
-    color: #fefefe;
-    content: "LOADING";
+    height: 120px;
+    border-radius: 50%;
+    width: 120px;
 }
 
 .job {
