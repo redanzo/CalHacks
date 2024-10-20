@@ -30,6 +30,7 @@ export default function ProfilePopover() {
           <div style={{ display: 'flex', justifyContent: 'center', position: 'fixed', top: '45px', right: '45px', width: 'max-content', zIndex: 100 }}>
             <Button className="hidden sm:block woopie" variant={"secondary"} style={{
               fontSize: '1.2em', textTransform: 'uppercase', background: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(10px)',
+              zIndex: '400',
               boxShadow: '3px 3px 20px 3px rgba(0, 0, 0, 0.5)',
               outline: '3px solid rgba(255, 255, 255, 0.7)',
             }}>
