@@ -16,35 +16,6 @@ export default function Jobs() {
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}>
-                    <div className={styles.job}>
-                        <div className={styles.header}>
-                            <h1>Emily Roberts</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p>Imagine a good job oppertunity</p>
-                    </div>
-
-                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
-                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
-                            <h1>Mark Weasel</h1>
-                            <div className={styles.require}>
-                                <span>C#</span>
-                                <span>Python</span>
-                                <span>Java</span>
-                                <span>JavaScript</span>
-                            </div>
-                            <span></span>
-                            <p>98% Compatible</p>
-                        </div>
-                        <p>Imagine a good job oppertunity</p>
-                    </div>
                     
                     <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
                         <div className={styles.header} style={{ pointerEvents: 'none' }}>
@@ -58,9 +29,10 @@ export default function Jobs() {
                             <span></span>
                             <p>98% Compatible</p>
                         </div>
-                        <p>Imagine a good job oppertunity</p>
+                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
                     </div>
 
+                    
                     <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
                         <div className={styles.header} style={{ pointerEvents: 'none' }}>
                             <h1>Mark Weasel</h1>
@@ -73,12 +45,13 @@ export default function Jobs() {
                             <span></span>
                             <p>98% Compatible</p>
                         </div>
-                        <p>Imagine a good job oppertunity</p>
+                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
                     </div>
 
-                    <div className={styles.job}>
-                        <div className={styles.header}>
-                            <h1>Jonny Whatshisface</h1>
+                    
+                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
+                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
+                            <h1>Mark Weasel</h1>
                             <div className={styles.require}>
                                 <span>C#</span>
                                 <span>Python</span>
@@ -88,7 +61,39 @@ export default function Jobs() {
                             <span></span>
                             <p>98% Compatible</p>
                         </div>
-                        <p>Imagine a good job oppertunity</p>
+                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
+                    </div>
+
+                    
+                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
+                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
+                            <h1>Mark Weasel</h1>
+                            <div className={styles.require}>
+                                <span>C#</span>
+                                <span>Python</span>
+                                <span>Java</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <span></span>
+                            <p>98% Compatible</p>
+                        </div>
+                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
+                    </div>
+
+                    
+                    <div className={styles.job} onClick={(e) => (e.target as any).remove()}>
+                        <div className={styles.header} style={{ pointerEvents: 'none' }}>
+                            <h1>Mark Weasel</h1>
+                            <div className={styles.require}>
+                                <span>C#</span>
+                                <span>Python</span>
+                                <span>Java</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <span></span>
+                            <p>98% Compatible</p>
+                        </div>
+                        <p style={{ pointerEvents: 'none' }}>Imagine a good job oppertunity</p>
                     </div>
                 </main>
             </div>

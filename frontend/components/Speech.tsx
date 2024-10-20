@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Jobs from './Jobs';
+import Process from './Process';
 import styles from './speech.module.css';
 
 export default function Speech() {
@@ -24,13 +24,13 @@ export default function Speech() {
         document.getElementById('transcript')?.innerHTML.match(/\<b\>.*\<\/b\>/g)?.forEach((word: string) => {
             list.includes(word.slice(3, -4)) ? null : list.push(word.slice(3, -4))
         })
-        fetch('http://localhost:5000/e2', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ list })
-        })
+        // fetch('http://localhost:5000/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ list })
+        // })
         setJob(true)
     }
 
@@ -63,7 +63,7 @@ export default function Speech() {
     }
 
     return (<>
-        {job && <Jobs />}
+        {job && <Process />}
         <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed' }}>
             <main style={{
                 background: 'rgba(255, 255, 255, 0.3)',

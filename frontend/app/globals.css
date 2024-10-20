@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -69,9 +68,12 @@
 
 :root {
   --background: radial-gradient(ellipse at top, #ea00ff 20%, rgba(0, 0, 0, 0.5)),
-  radial-gradient(ellipse at bottom, #007fff 40%, rgba(0, 0, 0, 0.5));
+    radial-gradient(ellipse at bottom, #007fff 40%, rgba(0, 0, 0, 0.5));
   --background: linear-gradient(to bottom right, #007fff, #e74c3c 80%);
   --foreground: #ededed;
+
+  --load: 50%;
+  --load-color: #007fff;
 }
 
 html {
@@ -79,12 +81,12 @@ html {
 }
 
 .woopie {
-  font-family: 'Beiruti', system-ui !important;
+  font-family: "Beiruti", system-ui !important;
   color: #2c2e36;
 }
 
 .t {
-  font-family: 'Orbitron', system-ui !important;
+  font-family: "Orbitron", system-ui !important;
 }
 
 body {
