@@ -3,26 +3,26 @@ import { useCustomWallet } from "@/contexts/CustomWallet";
 import { SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction } from "@mysten/sui/transactions";
 
-export const useIncrementCounterTransaction = () => {
-  const { sponsorAndExecuteTransactionBlock, address } = useCustomWallet();
+export const useSettleTransaction = () => {
+  const { executeTransactionBlockWithoutSponsorship, address } = useCustomWallet();
 
-  const handleExecute = async (
-    id: string
-  ): Promise<SuiTransactionBlockResponse> => {
+  const handleExecute = async (success:boolean, id:string) => {
     const recipient = address!;
+
+    console.log("recipient", recipient);
 
     const txb = new Transaction();
 
+    // how do i get rercuiter address and amount from the frontend?
+
+
     txb.moveCall({
-      arguments: [txb.object(id)],
-      target: `${clientConfig.PACKAGE_ID}::counter::increment`,
+      target: `${clientConfig.PACKAGE_ID}::agreement::settle`,
+      arguments: [txb.object(id), txb.pure.bool(success)]
     });
 
-    return await sponsorAndExecuteTransactionBlock({
+    return await executeTransactionBlockWithoutSponsorship({
       tx: txb,
-      network: clientConfig.SUI_NETWORK_NAME,
-      includesTransferTx: true,
-      allowedAddresses: [recipient],
       options: {
         showEffects: true,
         showObjectChanges: true,

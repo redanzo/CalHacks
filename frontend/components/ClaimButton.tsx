@@ -2,24 +2,26 @@ import { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import { useCreateCounterTransaction } from "@/hooks/useCreateCounterTransaction";
+import { useCreateAgreementTransaction } from "@/hooks/useCreateAgreementTransaction";
 import { useCustomWallet } from "@/contexts/CustomWallet";
+import { useClaimTransaction } from "@/hooks/useClaimTransaction";
 
-export function CreateCounter({
+export function ClaimButton({
   onCreated,
+  objectID,
 }: {
-  onCreated: (id: string) => void;
+  onCreated: (id: string) => void, objectID: string;
 }) {
   const [waitingForTxn, setWaitingForTxn] = useState(false);
   const { isConnected } = useCustomWallet();
 
-  const { handleExecute } = useCreateCounterTransaction();
+  const { handleExecute } = useClaimTransaction();
 
-  async function create() {
+  async function claim() {
     setWaitingForTxn(true);
-
-    const txn = await handleExecute();
-
+    console.log("create agreement");
+    const txn = await handleExecute(objectID);
+    
     console.log("txn", txn);
 
     const objectId = txn.effects?.created?.[0]?.reference?.objectId;
@@ -35,11 +37,12 @@ export function CreateCounter({
     <Card>
       <Button
         onClick={() => {
-          create();
+          console.log("claim job");
+          claim();
         }}
         disabled={waitingForTxn || !isConnected}
       >
-        {waitingForTxn ? <ClipLoader size={20} /> : isConnected ? "Create Personal Counter" : "Sign in to increment"}
+        {waitingForTxn ? <ClipLoader size={20} /> : isConnected ? "Claim" : "connect wallet"}
       </Button>
     </Card>
   );

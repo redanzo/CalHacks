@@ -33,6 +33,10 @@ module agreement::agreement {
         }
     }
 
+    public entry fun claim(self: &mut Agreement, freelancer: address){
+        self.freelancer = freelancer;
+    }
+
     /// Create a new agreement and convert the coin to Balance<SUI> type
     public entry fun create(
         recruiter: address,

@@ -254,9 +254,9 @@ export default function CustomWalletProvider({children}: {children: React.ReactN
     tx,
     options,
   }: ExecuteTransactionBlockWithoutSponsorshipProps): Promise<SuiTransactionBlockResponse | void> => {
-    if (!isConnected) {
-      return;
-    }
+    // if (!isConnected) {
+    //   return;
+    // }
     tx.setSender(address!);
     const txBytes = await tx.build({ client: suiClient });
     const signature = await signTransaction(txBytes);

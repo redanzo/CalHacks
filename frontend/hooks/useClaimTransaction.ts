@@ -3,26 +3,23 @@ import { useCustomWallet } from "@/contexts/CustomWallet";
 import { SuiTransactionBlockResponse } from "@mysten/sui/client";
 import { Transaction } from "@mysten/sui/transactions";
 
-export const useResetCounterTransaction = () => {
-  const { sponsorAndExecuteTransactionBlock, address } = useCustomWallet();
+export const useClaimTransaction = () => {
+  const { executeTransactionBlockWithoutSponsorship, address } = useCustomWallet();
 
   const handleExecute = async (
     id: string
-  ): Promise<SuiTransactionBlockResponse> => {
+  ) => {
     const recipient = address!;
 
     const txb = new Transaction();
 
     txb.moveCall({
-      arguments: [txb.object(id), txb.pure.u64(0)],
-      target: `${clientConfig.PACKAGE_ID}::counter::set_value`,
+      arguments: [txb.object(id), txb.pure.address(recipient)],
+      target: `${clientConfig.PACKAGE_ID}::agreement::claim`,
     });
 
-    return await sponsorAndExecuteTransactionBlock({
+    return await executeTransactionBlockWithoutSponsorship({
       tx: txb,
-      network: clientConfig.SUI_NETWORK_NAME,
-      includesTransferTx: true,
-      allowedAddresses: [recipient],
       options: {
         showEffects: true,
         showObjectChanges: true,

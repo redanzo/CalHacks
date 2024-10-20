@@ -5,11 +5,14 @@ import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { useIncrementCounterTransaction } from "@/hooks/useIncrementCounterTransaction";
-import { useResetCounterTransaction } from "@/hooks/useResetCounterTransaction";
+import { useClaimTransaction } from "@/hooks/useClaimTransaction";
 import { useCustomWallet } from "@/contexts/CustomWallet";
+import { set } from "zod";
 
-export function Counter({ id }: { id: string }) {
+let freelancer ="wfbnebnrgfoi"
+
+export function Counter({ id, setObjectID, }: { id: string, setObjectID:any }) {
+  setObjectID(id)
   const { address, isConnected } = useCustomWallet();
   const suiClient = useSuiClient();
   const { data, isPending, error, refetch } = useSuiClientQuery("getObject", {
@@ -31,32 +34,7 @@ export function Counter({ id }: { id: string }) {
 
   const [waitingForTxn, setWaitingForTxn] = useState("");
 
-  const { handleExecute: handleIncrement } = useIncrementCounterTransaction();
-  const { handleExecute: handleReset } = useResetCounterTransaction();
 
-  const executeMoveCall = async (method: "increment" | "reset") => {
-    setWaitingForTxn(method);
-
-    const tx = new Transaction();
-
-    if (method === "reset") {
-      const resetTxn = await handleReset(id);
-      suiClient
-        .waitForTransaction({ digest: resetTxn.digest })
-        .then(async () => {
-          await refetch();
-          setWaitingForTxn("");
-        });
-    } else {
-      const incrementTxn = await handleIncrement(id);
-      suiClient
-        .waitForTransaction({ digest: incrementTxn.digest })
-        .then(async () => {
-          await refetch();
-          setWaitingForTxn("");
-        });
-    }
-  };
 
   if (isPending) return <span>Loading...</span>;
 
@@ -64,46 +42,28 @@ export function Counter({ id }: { id: string }) {
 
   if (!data.data) return <span>Not found</span>;
 
-  const ownedByCurrentAccount = getCounterFields(data.data)?.owner === address;
-
-  console.log("ownedByCurrentAccount", ownedByCurrentAccount);
+  const obj = data.data?.content?.fields;
+  const balance = obj.balance;
+  const rercuiter = obj.recruiter;
+  freelancer = obj.freelancer;
+  const status = obj.status ? "Complete" : "Incomplete";
+  console.log(balance, freelancer, rercuiter, status);
+  console.log(data.data?.content?.fields);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-xl">Counter {id.slice(0,8)}</CardTitle>
+        <CardTitle className="text-xl">Object ID {id}</CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-2">
-        <span>Count: {getCounterFields(data.data)?.value}</span>
-        <div className="flex flex-row justify-around items-center gap-2">
-          <Button
-            onClick={() => executeMoveCall("increment")}
-            disabled={waitingForTxn !== "" || !isConnected}
-          >
-            {waitingForTxn === "increment" ? (
-              <ClipLoader size={20} />
-            ) : (
-              isConnected ? "Increment" : "Sign in to increment"
-            )}
-          </Button>
-          {ownedByCurrentAccount ? (
-            <Button
-              onClick={() => executeMoveCall("reset")}
-              disabled={waitingForTxn !== ""}
-            >
-              {waitingForTxn === "reset" ? <ClipLoader size={20} /> : "Reset"}
-            </Button>
-          ) : null}
-        </div>
+        <span>Balance: {balance}</span>
+        <span>Freelancer: {freelancer}</span>
+        <span>Rercuiter: {rercuiter}</span>
+        <span>status: {status}</span>
+       
       </CardContent>
     </Card>
   );
 }
-function getCounterFields(data: SuiObjectData) {
-  if (data.content?.dataType !== "moveObject") {
-    return null;
-  }
 
-  return data.content.fields as { value: number; owner: string };
-}
