@@ -6,8 +6,10 @@ import { useCreateAgreementTransaction } from "@/hooks/useCreateAgreementTransac
 import { useCustomWallet } from "@/contexts/CustomWallet";
 
 export function CreateAgreement({
+  mic,
   onCreated,
 }: {
+  mic: boolean;
   onCreated: (id: string) => void;
 }) {
   const [waitingForTxn, setWaitingForTxn] = useState(false);
@@ -22,7 +24,7 @@ export function CreateAgreement({
 
     console.log("txn", txn);
 
-    const objectId = txn.effects?.created?.[0]?.reference?.objectId;
+    const objectId = (txn as any).effects?.created?.[0]?.reference?.objectId;
 
     if (objectId) {
       onCreated(objectId);
@@ -31,9 +33,17 @@ export function CreateAgreement({
     setWaitingForTxn(false);
   }
 
+  if (mic) {
+    setTimeout(() => {
+      document.getElementById("create-agreement")?.click();
+    }, 1000)
+  }
+
   return (
     <Card>
       <Button
+        id="create-agreement" 
+        style={{ zIndex: 1000, position: "relative" }}
         onClick={() => {
           console.log("create agreement");
           create();

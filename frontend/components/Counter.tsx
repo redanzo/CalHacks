@@ -8,10 +8,15 @@ import { Button } from "./ui/button";
 import { useClaimTransaction } from "@/hooks/useClaimTransaction";
 import { useCustomWallet } from "@/contexts/CustomWallet";
 import { set } from "zod";
+import { CompleteButton } from "@/components/CompleteButton";
+import { IncompleteButton } from "@/components/IncompleteButton";
+import styles from './jobs.module.css'
 
-let freelancer ="wfbnebnrgfoi"
+let freelancer = "wfbnebnrgfoi"
 
-export function Counter({ id, setObjectID, }: { id: string, setObjectID:any }) {
+export function Counter({ id, setObjectID, }: { id: string, setObjectID: any }) {
+
+  const [counter, setCounter] = useState<string | null>(null);
   setObjectID(id)
   const { address, isConnected } = useCustomWallet();
   const suiClient = useSuiClient();
@@ -36,11 +41,11 @@ export function Counter({ id, setObjectID, }: { id: string, setObjectID:any }) {
 
 
 
-  if (isPending) return <span>Loading...</span>;
+  if (isPending) return <></>;
 
   if (error) return <span>Error: {error.message}</span>;
 
-  if (!data.data) return <span>Not found</span>;
+  if (!data.data) return <></>
 
   const obj = data.data?.content?.fields;
   const balance = obj.balance;
@@ -51,17 +56,41 @@ export function Counter({ id, setObjectID, }: { id: string, setObjectID:any }) {
   console.log(data.data?.content?.fields);
 
   return (
-    <Card>
+    <Card style={{
+      position: "fixed",
+      top: "50%",
+      left: "50%",
+      zIndex: 1000,
+      transform: "translate(-50%, -50%)",
+      padding: "20px",
+      width: "60vw",
+      height: "65vh",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 1)",
+      backdropFilter: "blur(10px)",
+      background: "rgba(255, 255, 255, 0.5)",
+      outline: "3px solid rgba(255, 255, 255, 1)",
+    }} className={styles.card}>
       <CardHeader>
-        <CardTitle className="text-xl">Object ID {id}</CardTitle>
+        <CardTitle className="text-xl woopie" style={{ fontSize: '30px' }}>Object ID {id}</CardTitle>
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-2">
+      <CardContent className="flex flex-col gap-2 t">
         <span>Balance: {balance}</span>
         <span>Freelancer: {freelancer}</span>
         <span>Rercuiter: {rercuiter}</span>
         <span>status: {status}</span>
-       
+
+
+        <CompleteButton onCreated={(id) => {
+          window.location.hash = id;
+          setCounter(id);
+
+        }} objectID={id} />
+        <IncompleteButton onCreated={(id) => {
+          window.location.hash = id;
+          setCounter(id);
+        }} objectID={id} />
+
       </CardContent>
     </Card>
   );

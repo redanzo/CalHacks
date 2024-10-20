@@ -35,8 +35,20 @@ export function IncompleteButton({
   }
 
   return (
-    <Card>
+    <Card style={{
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'transparent',
+      outline: 'none',
+      border: 'none',
+
+    }}>
       <Button
+      style={{ zIndex: 1000, position: "relative", width: '100px',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+        outline: '2px solid #000', }}
         onClick={() => {
           console.log("claim job");
           claim();

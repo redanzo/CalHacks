@@ -1,15 +1,53 @@
 import { useEffect, useState } from 'react';
 import Process from './Process';
+import Jobs from './Jobs'
+import { CreateAgreement } from "@/components/CreateAgreement";
 import styles from './speech.module.css';
 
+import ClipLoader from "react-spinners/ClipLoader";
+import { Card } from "./ui/card";
+import { Button } from "./ui/button";
+import { useCreateAgreementTransaction } from "@/hooks/useCreateAgreementTransaction";
+import { useCustomWallet } from "@/contexts/CustomWallet";
+
 export default function Speech() {
+
+    const [objectId, setObjectId] = useState<string | null>(null);
+
+    const [waitingForTxn, setWaitingForTxn] = useState(false);
+    const { isConnected } = useCustomWallet();
+
+    const { handleExecute } = useCreateAgreementTransaction();
+
+    async function create() {
+        setWaitingForTxn(true);
+        console.log("create agreement");
+        const txn = await handleExecute();
+
+        console.log("txn", txn);
+
+        setObjectId((txn as any).effects?.created?.[0]?.reference?.objectId);
+
+        if (objectId) {
+
+            window.location.hash = objectId;
+            setCounter(objectId);
+        }
+
+        setWaitingForTxn(false);
+    }
+
+
+
     const [start, setStart] = useState(false);
+    const [counterId, setCounter] = useState<string | null>(null);
     const [job, setJob] = useState(false);
     let final = ''
     const { webkitSpeechRecognition }: any = window;
     const recognition = new webkitSpeechRecognition();
     let keywords = ['hello', 'bye', 'goodbye', 'good', 'bad', 'yes', 'no', 'maybe', 'ok', 'fine', 'great', 'awesome', 'cool', 'nice', 'bad', 'terrible', 'horrible', 'sad', 'happy', 'angry', 'mad', 'upset', 'excited', 'bored', 'tired', 'sleepy', 'hungry', 'thirsty', 'hot', 'cold', 'sick', 'ill', 'healthy', 'well', 'better', 'worse', 'best', 'worst', 'beautiful', 'ugly', 'pretty', 'handsome', 'cute', 'smart', 'intelligent', 'dumb', 'stupid', 'clever', 'wise', 'silly', 'funny', 'serious', 'calm', 'relaxed', 'nervous', 'anxious', 'scared', 'afraid', 'frightened', 'shy', 'brave', 'courageous', 'proud', 'ashamed', 'guilty', 'embarrassed', 'confident', 'humble', 'modest', 'jealous', 'envious', 'greedy', 'generous', 'selfish', 'selfless', 'kind', 'mean', 'rude', 'polite', 'respectful', 'disrespectful', 'honest', 'dishonest', 'loyal', 'unloyal', 'faithful', 'unfaithful', 'trustworthy', 'untrustworthy', 'reliable', 'unreliable', 'responsible', 'irresponsible', 'mature', 'immature', 'patient', 'impatient', 'tolerant', 'intolerant', 'forgiving', 'unforgiving', 'understanding', 'misunderstanding', 'sympathetic', 'unsympathetic', 'empathetic', 'unempathetic', 'compassionate', 'uncompassionate', 'caring', 'uncaring', 'loving', 'unloving', 'affectionate', 'unaffectionate', 'passionate', 'unpassionate', 'romantic', 'unromantic', 'sensual', 'unsensual', 'sexual', 'asexual', 'aromantic', 'unaromantic', 'platonic', 'unplatonic', 'friendly', 'unfriendly', 'social', 'antisocial', 'introverted', 'extroverted', 'ambiverted', 'shy', 'outgoing', 'talkative', 'quiet', 'silent', 'loud', 'noisy', 'chatty', 'gossipy', 'nosy', 'curious', 'inquisitive', 'interested', 'bored', 'boring', 'exciting', 'excited', 'fun', 'funny', 'hilarious', 'entertaining', 'entertained', 'bored', 'boring', 'interested', 'interesting']
 
+    let once = false
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
@@ -63,7 +101,10 @@ export default function Speech() {
     }
 
     return (<>
-        {job && <Process />}
+        {job && <>
+            {!once && <Process objectId={objectId as string} />}
+            {once = true}
+            </>}
         <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed' }}>
             <main style={{
                 background: 'rgba(255, 255, 255, 0.3)',
@@ -102,6 +143,7 @@ export default function Speech() {
                         onClick={(e) => {
                             if (start) {
                                 runE2()
+                                create()
                             }
                             recognition[!start ? 'start' : 'stop']();
                         }}>

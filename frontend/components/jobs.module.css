@@ -6,6 +6,21 @@
     initial-value: 0%;
 }
 
+.card {
+    animation: pulluppop 1s forwards ease-in-out;
+}
+
+@keyframes pulluppop {
+    0% {
+        transform: translate(-50%, -50%) translateY(100px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) translateY(0);
+        opacity: 1;
+    }
+}
 
 .load > div:before {
     content: "";
@@ -49,6 +64,7 @@
     margin: 20px 15%;
     padding: 1rem;
     animation: pullup 1s forwards ease-in-out;
+    cursor: pointer;
 }
 
 .jobs,
