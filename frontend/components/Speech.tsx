@@ -112,6 +112,7 @@ export default function Speech() {
             {!once && <Process objectId={objectId as string} p={[percent, setPercent]} f={freelancers as any} />}
             {once = true}
         </>}
+        {job && <div className={styles.escape + ' t'} onClick={() => setJob(false)}>x</div>}
         <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed' }}>
             <main style={{
                 background: 'rgba(255, 255, 255, 0.3)',
@@ -150,6 +151,7 @@ export default function Speech() {
                         }}
                         onClick={(e) => {
                             if (start) {
+                                setStart(false)
                                 runE2()
                                 create()
                             }

@@ -122,6 +122,21 @@
     margin: 0 4px;
 }
 
+.escape {
+    width: 30px;
+    height: 30px;
+    position: fixed;
+    top: 10px;
+    font-size: 18px;
+    left: 20px;
+    padding-left: 9px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.5);
+    color: #007fff;
+    font-weight: bold;
+    z-index: 2000;
+}
+
 .check:hover {
     background: rgba(67, 181, 129, 1);
 }
